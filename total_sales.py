@@ -11,6 +11,7 @@
 # - Убедитесь, что количество и цена всегда положительные.
 
 from collections import namedtuple
+from functools import reduce
 from typing import List
 
 Sale = namedtuple("Sale", ["product", "quantity", "price"])
@@ -21,13 +22,14 @@ sales = [
 ]
 
 
+def reduce_price(i:float, sale: Sale) -> float:
+    return ((sale.price * sale.quantity) + i)
+
 def total_sales(sales: List[Sale] = None) -> float:
     if sales is None or len(sales) == 0:
         return 0.0
 
-    result = 0.0
-    for sale in sales:
-        result += sale.quantity * sale.price
+    result = reduce(reduce_price, sales, 0.0)
 
     return result
 
